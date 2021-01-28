@@ -7,7 +7,7 @@
 /*
  * The following characters will not be escaped:
  *
- *		-_.+!*'(),%#@?=;:/,+&$ alphanum
+ *		-_.+!*'(),%#@?=;:/,+&$~ alphanum
  *
  * Note that this character set is the addition of:
  *
@@ -20,7 +20,7 @@
  * have its native function (i.e. as an URL
  * component/separator) and hence needs no escaping.
  *
- * There are two exceptions: the characters & (amp)
+ * There are two exceptions: the chacters & (amp)
  * and ' (single quote) do not appear in the table.
  * They are meant to appear in the URL as components,
  * yet they require special HTML-entity escaping
@@ -35,7 +35,7 @@ static const char HREF_SAFE[] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

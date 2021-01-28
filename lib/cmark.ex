@@ -49,6 +49,14 @@ defmodule Cmark do
     unsafe: 131_072
   }
 
+  @extension_flags %{
+    table: 0x1,
+    strikethrough: 0x2,
+    autolink: 0x4,
+    tagfilter: 0x8,
+    tasklist: 0x10
+  }
+
   @typedoc "A list of atoms describing the options to use (see module docs)"
   @type options_list ::
           [:sourcepos | :hardbreaks | :nobreaks | :normalize | :validate_utf8 | :smart | :unsafe]
@@ -65,9 +73,9 @@ defmodule Cmark do
 
   """
   @spec to_html(String.t(), options_list) :: String.t()
-  def to_html(document, options_list \\ [])
-      when is_binary(document) and is_list(options_list) do
-    convert(document, options_list, @html_id)
+  def to_html(document, options_list \\ [], extension_list \\ [])
+      when is_binary(document) and is_list(options_list) and is_list(extension_list) do
+    convert(document, options_list, extension_list, @html_id)
   end
 
   @doc ~S"""
@@ -84,7 +92,7 @@ defmodule Cmark do
   @spec to_xml(String.t(), options_list) :: String.t()
   def to_xml(document, options_list \\ [])
       when is_binary(document) and is_list(options_list) do
-    convert(document, options_list, @xml_id)
+    convert(document, options_list, [], @xml_id)
   end
 
   @doc ~S"""
@@ -101,7 +109,7 @@ defmodule Cmark do
   @spec to_man(String.t(), options_list) :: String.t()
   def to_man(document, options_list \\ [])
       when is_binary(document) and is_list(options_list) do
-    convert(document, options_list, @man_id)
+    convert(document, options_list, [], @man_id)
   end
 
   @doc ~S"""
@@ -118,7 +126,7 @@ defmodule Cmark do
   @spec to_commonmark(String.t(), options_list) :: String.t()
   def to_commonmark(document, options_list \\ [])
       when is_binary(document) and is_list(options_list) do
-    convert(document, options_list, @commonmark_id)
+    convert(document, options_list, [], @commonmark_id)
   end
 
   @doc ~S"""
@@ -135,11 +143,12 @@ defmodule Cmark do
   @spec to_latex(String.t(), options_list) :: String.t()
   def to_latex(document, options_list \\ [])
       when is_binary(document) and is_list(options_list) do
-    convert(document, options_list, @latex_id)
+    convert(document, options_list, [], @latex_id)
   end
 
-  defp convert(document, options_list, format_id) when is_integer(format_id) do
-    bitflag = Enum.reduce(options_list, 0, fn flag, acc -> Map.fetch!(@flags, flag) + acc end)
-    Cmark.Nif.render(document, bitflag, format_id)
+  defp convert(document, options_list, extension_list, format_id) when is_integer(format_id) do
+    bitflag = Enum.reduce(options_list, 0, &(Map.fetch!(@flags, &1) + &2))
+    extensionflag = Enum.reduce(extension_list, 0, &(Map.fetch!(@extension_flags, &1) + &2))
+    Cmark.Nif.render(document, bitflag, extensionflag, format_id)
   end
 end
